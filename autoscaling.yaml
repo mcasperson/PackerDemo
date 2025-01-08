@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  SubnetIdAz1:
+    Type: AWS::EC2::Subnet::Id
+  SubnetIdAz2:
+    Type: AWS::EC2::Subnet::Id
+  SecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+  AmiId:
+    Type: AWS::EC2::Image::Id
+Resources:
+  LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
+      LaunchTemplateData:
+        ImageId: !Ref AmiId
+        InstanceType: t3.small
+        SecurityGroupIds:
+          - !Ref SecurityGroupId
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: name
+                Value: "mattc test instance"
+          - ResourceType: volume
+            Tags:
+              - Key: name
+                Value: "mattc test volume"
+  ASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier:
+        - !Ref SubnetIdAz1
+        - !Ref SubnetIdAz2
+      LaunchTemplate:
+        LaunchTemplateId: !Ref LaunchTemplate
+        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+      MaxSize: '1'
+      MinSize: '1'
+Outputs:
+  AutoScalingGroupId:
+    Value: !Ref AutoScalingGroup
+    Description: Auto Scaling Group ID
