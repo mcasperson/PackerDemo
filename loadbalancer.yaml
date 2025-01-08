@@ -1,11 +1,11 @@
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  SubnetIdAz1:
+    Type: AWS::EC2::Subnet::Id
+  SubnetIdAz2:
+    Type: AWS::EC2::Subnet::Id
 Resources:
-  Parameters:
-    VpcId:
-      Type: AWS::EC2::VPC::Id
-    SubnetIdAz1:
-      Type: AWS::EC2::Subnet::Id
-    SubnetIdAz2:
-      Type: AWS::EC2::Subnet::Id
   MyNLB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
