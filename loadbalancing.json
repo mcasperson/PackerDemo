@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "SubnetIdAz1",
+    "ParameterValue": "#{AWS.Parameter.SubnetIdAz1}"
+  },
+  {
+    "ParameterKey": "SubnetIdAz2",
+    "ParameterValue": "#{AWS.Parameter.SubnetIdAz2}"
+  }
+]

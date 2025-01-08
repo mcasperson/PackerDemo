@@ -1,0 +1,97 @@
+Resources:
+  Parameters:
+    SubnetIdAz1:
+      Type: AWS::EC2::Subnet::Id
+    SubnetIdAz2:
+      Type: AWS::EC2::Subnet::Id
+  MyNLB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: my-nlb
+      Type: application
+      Subnets:
+        - !Ref SubnetIdAz1
+        - !Ref SubnetIdAz2
+      Scheme: internet-facing
+      LoadBalancerAttributes:
+        - Key: idle_timeout.timeout_seconds
+          Value: '60'
+  GreenTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 5
+      HealthCheckPath: /
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 2
+      HealthyThresholdCount: 2
+      Matcher:
+        HttpCode: 200
+      Name: OctopusGreenTargetGroup
+      Port: 80
+      Protocol: HTTP
+      TargetType: ip
+      UnhealthyThresholdCount: 5
+      VpcId: vpc-04fb5b2e72c17ca68
+  BlueTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 5
+      HealthCheckPath: /
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 2
+      HealthyThresholdCount: 2
+      Matcher:
+        HttpCode: 200
+      Name: OctopusBlueTargetGroup
+      Port: 80
+      Protocol: HTTP
+      TargetType: ip
+      UnhealthyThresholdCount: 5
+      VpcId: vpc-04fb5b2e72c17ca68
+  MyListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - FixedResponseConfig:
+            StatusCode: 404
+          Order: 1
+          Type: fixed-response
+      LoadBalancerArn: !Ref MyNLB
+      Port: 80
+      Protocol: HTTP
+  MyListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - ForwardConfig:
+            TargetGroups:
+              - TargetGroupArn: !Ref GreenTargetGroup
+                Weight: 0
+              - TargetGroupArn: !Ref BlueTargetGroup
+                Weight: 100
+          Order: 1
+          Type: forward
+      Conditions:
+        - Field: path-pattern
+          PathPatternConfig:
+            Values:
+              - /*
+      ListenerArn: !Ref MyListener
+      Priority: 10
+Outputs:
+  BlueTaskSet:
+    Description: The blue service task set
+    Value: !GetAtt BlueTaskSet.Id
+  GreenTaskSet:
+    Description: The green service task set
+    Value: !GetAtt GreenTaskSet.Id
+  BlueTargetGroup:
+    Description: The blue target group
+    Value: !Ref BlueTargetGroup
+  GreenTargetGroup:
+    Description: The green target group
+    Value: !Ref GreenTargetGroup
