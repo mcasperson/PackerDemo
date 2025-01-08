@@ -85,12 +85,12 @@ Resources:
       ListenerArn: !Ref MyListener
       Priority: 10
 Outputs:
-  BlueTaskSet:
-    Description: The blue service task set
-    Value: !GetAtt BlueTaskSet.Id
-  GreenTaskSet:
-    Description: The green service task set
-    Value: !GetAtt GreenTaskSet.Id
+  MyNLB:
+    Description: The ALB
+    Value: !Ref MyNLB
+  MyListener:
+    Description: The ALB listener
+    Value: !Ref MyListener
   BlueTargetGroup:
     Description: The blue target group
     Value: !Ref BlueTargetGroup
