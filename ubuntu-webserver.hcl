@@ -19,12 +19,10 @@ variable "aws_region" {
 
 variable "subnet" {
   type    = string
-  default = "${env("BUILD_SUBNET_ID")}"
 }
 
 variable "vpc" {
   type    = string
-  default = "${env("BUILD_VPC_ID")}"
 }
 
 variable "ami_users" {
