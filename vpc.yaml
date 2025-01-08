@@ -59,6 +59,23 @@ Resources:
     Properties:
       RouteTableId: !Ref RouteTable
       SubnetId: !Ref SubnetB
+  PackerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      Tags:
+        - Key: Name
+        - Value: "packer-build-sg"
+      GroupName: "packer Security Group"
+      GroupDescription: "Allow HTTP Traffic"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp:  0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
 Outputs:
   VpcId:
     Value: !Ref VPC
@@ -69,3 +86,5 @@ Outputs:
   SubnetBId:
     Value: !Ref SubnetB
     Description: SubnetB ID
+  PackerSecurityGroupId:
+    Value: !Ref PackerSecurityGroup
