@@ -1,0 +1,7 @@
+{
+  "VpcId": "#{AWS.Parameter.VpcId}",
+  "SubnetIdAz1": "#{AWS.Parameter.SubnetIdAz1}",
+  "SubnetIdAz2": "#{AWS.Parameter.SubnetIdAz2}",
+  "SecurityGroupId": "#{AWS.Parameter.SecurityGroupId}",
+  "AmiId": "#{AWS.Parameter.AmiId}"
+}
