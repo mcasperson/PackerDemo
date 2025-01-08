@@ -14,5 +14,9 @@
   {
     "ParameterKey": "AmiId",
     "ParameterValue": "#{AWS.Parameter.AmiId}"
+  },
+  {
+    "ParameterKey": "SecurityGroupId",
+    "ParameterValue": "#{AWS.Parameter.SecurityGroupId}"
   }
 ]
