@@ -85,8 +85,8 @@ build {
   provisioner "shell" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y httpd",
-      "sudo systemctl start httpd"]
+      "sudo apt-get install -y apache2",
+      "sudo systemctl start apache2"]
     pause_before = "10s"
     timeout      = "10s"
   }
