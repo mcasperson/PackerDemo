@@ -1,7 +1,18 @@
-{
-  "VpcId": "#{AWS.Parameter.VpcId}",
-  "SubnetIdAz1": "#{AWS.Parameter.SubnetIdAz1}",
-  "SubnetIdAz2": "#{AWS.Parameter.SubnetIdAz2}",
-  "SecurityGroupId": "#{AWS.Parameter.SecurityGroupId}",
-  "AmiId": "#{AWS.Parameter.AmiId}"
-}
+[
+  {
+    "ParameterKey": "VpcId",
+    "ParameterValue": "#{AWS.Parameter.VpcId}"
+  },
+  {
+    "ParameterKey": "SubnetIdAz1",
+    "ParameterValue": "#{AWS.Parameter.SubnetIdAz1}"
+  },
+  {
+    "ParameterKey": "SubnetIdAz2",
+    "ParameterValue": "#{AWS.Parameter.SubnetIdAz2}"
+  },
+  {
+    "ParameterKey": "AmiId",
+    "ParameterValue": "#{AWS.Parameter.AmiId}"
+  }
+]
