@@ -2,4 +2,4 @@
 cd packer
 chmod +x packer
 ./packer validate ubuntu-webserver.hcl
-./packer build ubuntu-webserver.hcl "-var=vpc=#{AWS.Network.VPCID}" "-var=subnet=#{AWS.Network.SubnetID}"
+./packer build "-var=vpc=#{AWS.Network.VPCID}" "-var=subnet=#{AWS.Network.SubnetID}" ubuntu-webserver.hcl
