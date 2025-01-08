@@ -83,7 +83,7 @@ build {
   sources = ["source.amazon-ebs.AWS_AMI_Builder"]
 
   provisioner "shell" {
-    inline = ["sudo yum update -y", "sudo yum install -y httpd", "sudo systemctl start httpd"]
+    inline = ["sudo apt-get update", "sudo apt-get install -y httpd", "sudo systemctl start httpd"]
     pause_before = "10s"
     timeout      = "10s"
   }
