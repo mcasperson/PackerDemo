@@ -7,7 +7,7 @@ Resources:
   MyNLB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: my-nlb
+      Name: packer-alb
       Type: application
       Subnets:
         - !Ref SubnetIdAz1
