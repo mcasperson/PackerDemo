@@ -64,7 +64,7 @@ Resources:
     Properties:
       Tags:
         - Key: Name
-        - Value: "packer-build-sg"
+          Value: "packer-build-sg"
       GroupName: "packer Security Group"
       GroupDescription: "Allow HTTP Traffic"
       VpcId: !Ref VPC
