@@ -1,5 +1,9 @@
 [
   {
+    "ParameterKey": "VpcId",
+    "ParameterValue": "#{AWS.Parameter.VpcId}"
+  },
+  {
     "ParameterKey": "SubnetIdAz1",
     "ParameterValue": "#{AWS.Parameter.SubnetIdAz1}"
   },

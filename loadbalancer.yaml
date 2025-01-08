@@ -1,5 +1,7 @@
 Resources:
   Parameters:
+    VpcId:
+      Type: AWS::EC2::VPC::Id
     SubnetIdAz1:
       Type: AWS::EC2::Subnet::Id
     SubnetIdAz2:
@@ -33,7 +35,7 @@ Resources:
       Protocol: HTTP
       TargetType: ip
       UnhealthyThresholdCount: 5
-      VpcId: vpc-04fb5b2e72c17ca68
+      VpcId: !Ref VpcId
   BlueTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -51,7 +53,7 @@ Resources:
       Protocol: HTTP
       TargetType: ip
       UnhealthyThresholdCount: 5
-      VpcId: vpc-04fb5b2e72c17ca68
+      VpcId: !Ref VpcId
   MyListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
