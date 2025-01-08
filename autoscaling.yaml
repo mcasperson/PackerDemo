@@ -29,7 +29,7 @@ Resources:
             Tags:
               - Key: name
                 Value: "mattc test volume"
-  ASG:
+  AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       VPCZoneIdentifier:
