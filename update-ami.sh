@@ -12,23 +12,31 @@ LAUNCHTEMPLATE=$(aws autoscaling describe-auto-scaling-groups \
   --query 'AutoScalingGroups[0].LaunchTemplate.LaunchTemplateId' \
   --output text)
 
+echo "Modifying launch template ${LAUNCHTEMPLATE} for Auto Scaling group ${ASG}..."
+
 NEWVERSION=$(aws ec2 create-launch-template-version \
     --launch-template-id "${LAUNCHTEMPLATE}" \
     --version-description "#{Octopus.Release.Number}" \
     --source-version 1 \
     --launch-template-data "ImageId=#{AWS.AMI.ID}")
 
-write_verbose "${NEWVERSION}"
-
 NEWVERSIONNUMBER=$(jq -r '.LaunchTemplateVersion.VersionNumber' <<< "${NEWVERSION}")
+
+echo "Set AMI for launch template ${LAUNCHTEMPLATE} to #{AWS.AMI.ID}, generating new version ${NEWVERSIONNUMBER}..."
+
+write_verbose "${NEWVERSION}"
 
 MODIFYTEMPLATE=$(aws ec2 modify-launch-template \
     --launch-template-id "${LAUNCHTEMPLATE}" \
     --default-version "${NEWVERSIONNUMBER}")
 
+echo "Set default version for launch template ${LAUNCHTEMPLATE} to ${NEWVERSIONNUMBER}..."
+
 write_verbose "${MODIFYTEMPLATE}"
 
 REFRESH=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}")
+
+echo "Refreshing instances in Auto Scaling group ${ASG}..."
 
 write_verbose "${REFRESH}"
 
