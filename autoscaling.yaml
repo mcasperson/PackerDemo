@@ -54,6 +54,7 @@ Resources:
   AutoScalingGroupGreen:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
+      HealthCheckGracePeriod: 30
       VPCZoneIdentifier:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2
@@ -67,6 +68,7 @@ Resources:
   AutoScalingGroupBlue:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
+      HealthCheckGracePeriod: 30
       VPCZoneIdentifier:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2

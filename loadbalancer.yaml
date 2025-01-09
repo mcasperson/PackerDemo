@@ -46,7 +46,6 @@ Resources:
       HealthCheckPort: 80
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 2
-      HealthCheckGracePeriod: 30
       HealthyThresholdCount: 2
       Matcher:
         HttpCode: 200
@@ -70,7 +69,6 @@ Resources:
       HealthCheckPort: 80
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 2
-      HealthCheckGracePeriod: 30
       HealthyThresholdCount: 2
       Matcher:
         HttpCode: 200
