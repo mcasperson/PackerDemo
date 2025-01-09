@@ -1,20 +1,24 @@
 #!/bin/bash
 
+RULE=$1
+OFFLINEGROUP=$2
+ONLINEGROUP=$3
+
 # https://stackoverflow.com/questions/61074411/modify-aws-alb-traffic-distribution-using-aws-cli
 MODIFYRULE=$(aws elbv2 modify-rule \
-  --rule-arn "#{AWS.ALB.ListenerRule}" \
+  --rule-arn "${RULE}" \
   --actions \
-    '[{
-        "Type": "forward",
-        "Order": 1,
-        "ForwardConfig": {
-          "TargetGroups": [
-              {"TargetGroupArn": "#{Octopus.Action[Find Offline Target Group].Output.ActiveGroupArn}", "Weight": 0 },
-              {"TargetGroupArn": "#{Octopus.Action[Find Offline Target Group].Output.InactiveGroupArn}", "Weight": 100 }
+    "[{
+        \"Type\": \"forward\",
+        \"Order\": 1,
+        \"ForwardConfig\": {
+          \"TargetGroups\": [
+              {\"TargetGroupArn\": \"${OFFLINEGROUP}\", \"Weight\": 0 },
+              {\"TargetGroupArn\": \"${ONLINEGROUP}\", \"Weight\": 100 }
           ]
         }
-     }]')
+     }]")
 
-echo "Updated listener rules for #{AWS.ALB.ListenerRule} to set weight to 0 for #{Octopus.Action[Find Offline Target Group].Output.ActiveGroupArn} and 100 for #{Octopus.Action[Find Offline Target Group].Output.InactiveGroupArn}"
+echo "Updated listener rules for ${RULE} to set weight to 0 for ${OFFLINEGROUP} and 100 for ${ONLINEGROUP}."
 
 write_verbose "${MODIFYRULE}"

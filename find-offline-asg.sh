@@ -1,12 +1,16 @@
 #!/bin/bash
 
-if [[ "#{Octopus.Action[Find Offline Target Group].Output.InactiveGroupColor}" == "Green" ]]
+INACTIVECOLOR=$1
+GREENASG=$2
+BLUEASG=$3
+
+if [[ "${INACTIVECOLOR}" == "Green" ]]
 then
-  set_octopusvariable "ActiveGroup" "#{AWS.ASG.Blue}"
-  set_octopusvariable "InactiveGroup" "#{AWS.ASG.Green}"
-  echo "Active group is Blue (#{AWS.ASG.Blue}), inactive group is Green (#{AWS.ASG.Green})"
+  set_octopusvariable "ActiveGroup" "${BLUEASG}"
+  set_octopusvariable "InactiveGroup" "${GREENASG}"
+  echo "Active group is Blue (${BLUEASG}), inactive group is Green (${GREENASG})"
 else
-  set_octopusvariable "ActiveGroup" "#{AWS.ASG.Green}"
-    set_octopusvariable "InactiveGroup" "#{AWS.ASG.Blue}"
-    echo "Active group is Green (#{AWS.ASG.Green}), inactive group is Blue (#{AWS.ASG.Blue})"
+  set_octopusvariable "ActiveGroup" "${GREENASG}"
+    set_octopusvariable "InactiveGroup" "${BLUEASG}"
+    echo "Active group is Green (${GREENASG}), inactive group is Blue (${BLUEASG})"
 fi
