@@ -55,6 +55,11 @@ Resources:
       TargetType: instance
       UnhealthyThresholdCount: 5
       VpcId: !Ref VpcId
+      # Minimize the amount of time it takes an instance to drain connections
+      # https://stackoverflow.com/a/49263198/157605
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '20'
   BlueTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -73,6 +78,11 @@ Resources:
       TargetType: instance
       UnhealthyThresholdCount: 5
       VpcId: !Ref VpcId
+      # Minimize the amount of time it takes an instance to drain connections
+      # https://stackoverflow.com/a/49263198/157605
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '20'
   MyListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
