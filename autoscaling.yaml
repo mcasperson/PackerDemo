@@ -11,7 +11,7 @@ Parameters:
   AmiId:
     Type: AWS::EC2::Image::Id
 Resources:
-  LaunchTemplate:
+  BlueLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
       LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
@@ -23,12 +23,30 @@ Resources:
         TagSpecifications:
           - ResourceType: instance
             Tags:
-              - Key: name
-                Value: "mattc test instance"
+              - Key: Name
+                Value: "mattc blue test instance"
           - ResourceType: volume
             Tags:
-              - Key: name
-                Value: "mattc test volume"
+              - Key: Name
+                Value: "mattc blue test volume"
+  GreenLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
+      LaunchTemplateData:
+        ImageId: !Ref AmiId
+        InstanceType: t3.small
+        SecurityGroupIds:
+          - !Ref SecurityGroupId
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: Name
+                Value: "mattc green test instance"
+          - ResourceType: volume
+            Tags:
+              - Key: Name
+                Value: "mattc green test volume"
   AutoScalingGroupGreen:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -36,8 +54,8 @@ Resources:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2
       LaunchTemplate:
-        LaunchTemplateId: !Ref LaunchTemplate
-        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+        LaunchTemplateId: !Ref GreenLaunchTemplate
+        Version: !GetAtt GreenLaunchTemplate.LatestVersionNumber
       MaxSize: '1'
       MinSize: '1'
   AutoScalingGroupBlue:
@@ -47,8 +65,8 @@ Resources:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2
       LaunchTemplate:
-        LaunchTemplateId: !Ref LaunchTemplate
-        Version: !GetAtt LaunchTemplate.LatestVersionNumber
+        LaunchTemplateId: !Ref BlueLaunchTemplate
+        Version: !GetAtt BlueLaunchTemplate.LatestVersionNumber
       MaxSize: '1'
       MinSize: '1'
 Outputs:
