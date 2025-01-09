@@ -14,7 +14,7 @@ Resources:
           Value: "lb-sg"
       GroupName: "Load Balancer Security Group"
       GroupDescription: "Allow HTTP Traffic"
-      VpcId: !Ref VPC
+      VpcId: !Ref VpcId
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '80'
