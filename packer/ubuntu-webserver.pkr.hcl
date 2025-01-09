@@ -92,7 +92,9 @@ build {
       "sudo apt-get install -y apache2",
       "sudo systemctl start apache2",
       "current_time=$(date)",
-      "echo \"<html><body><h1 style=\\\"color: ${var.color}\\\">Hello Octopus!</h1><p>Build time: $current_time</p></body></html>\" | sudo tee /var/www/html/index.html"]
+      "echo \"<html><body><h1 style=\\\"color: ${var.color}\\\">Hello Octopus!</h1><p>Build time: $current_time</p></body></html>\" | sudo tee /var/www/html/index.html",
+      "echo \"<Files \"index.html\">\nHeader set Cache-Control \"no-store, no-cache, must-revalidate, max-age=0\"\nHeader set Pragma \"no-cache\"\nHeader set Expires \"0\"\n</Files>\" | sudo tee /var/www/html/.htaccess"
+    ]
     pause_before = "10s"
     timeout      = "10s"
   }
