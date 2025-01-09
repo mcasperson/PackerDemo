@@ -13,7 +13,7 @@ MODIFYRULE=$(aws elbv2 modify-rule \
               {"TargetGroupArn": "#{Octopus.Action[Find Offline Target Group].Output.InactiveGroupArn}", "Weight": 100 }
           ]
         }
-     }]'
+     }]')
 
 echo "Updated listener rules for #{AWS.ALB.ListenerRule} to set weight to 0 for #{Octopus.Action[Find Offline Target Group].Output.ActiveGroupArn} and 100 for #{Octopus.Action[Find Offline Target Group].Output.InactiveGroupArn}"
 
