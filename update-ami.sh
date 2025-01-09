@@ -35,7 +35,7 @@ check_instance_health() {
       --query 'InstanceStatuses[0].InstanceStatus.Status' \
       --output text)
 
-    if [ "${health_status}" != "ok" ]; then
+    if [[ "${health_status}" != "ok" ]]; then
       return 1
     fi
   done
