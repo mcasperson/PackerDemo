@@ -6,6 +6,23 @@ Parameters:
   SubnetIdAz2:
     Type: AWS::EC2::Subnet::Id
 Resources:
+  LBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      Tags:
+        - Key: Name
+          Value: "lb-sg"
+      GroupName: "Load Balancer Security Group"
+      GroupDescription: "Allow HTTP Traffic"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
   MyNLB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -15,6 +32,8 @@ Resources:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2
       Scheme: internet-facing
+      SecurityGroups:
+        - !Ref LBSecurityGroup
       LoadBalancerAttributes:
         - Key: idle_timeout.timeout_seconds
           Value: '60'
