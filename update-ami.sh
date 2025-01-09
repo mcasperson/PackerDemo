@@ -18,13 +18,19 @@ NEWVERSION=$(aws ec2 create-launch-template-version \
     --source-version 1 \
     --launch-template-data "ImageId=#{AWS.AMI.ID}")
 
+write_verbose "${NEWVERSION}"
+
 NEWVERSIONNUMBER=$(jq -r '.LaunchTemplateVersion.VersionNumber' <<< "${NEWVERSION}")
 
-aws ec2 modify-launch-template \
+MODIFYTEMPLATE=$(aws ec2 modify-launch-template \
     --launch-template-id "${LAUNCHTEMPLATE}" \
-    --default-version "${NEWVERSIONNUMBER}"
+    --default-version "${NEWVERSIONNUMBER}")
 
-aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}"
+write_verbose "${MODIFYTEMPLATE}"
+
+REFRESH=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}")
+
+write_verbose "${REFRESH}"
 
 # Function to check the health status of instances in the Auto Scaling group
 check_instance_health() {
