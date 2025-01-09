@@ -9,7 +9,7 @@ packer {
 
 variable "ami_name" {
   type    = string
-  default = "packerdemo-${timestamp()}"
+  default = "packerdemo"
 }
 
 variable "aws_region" {
@@ -51,7 +51,7 @@ source "amazon-ebs" "AWS_AMI_Builder" {
   }
   region = "${var.aws_region}"
   run_tags = {
-    Name = "${var.ami_name}"
+    Name = "${var.ami_name}.${formatdate("YYYY.MM.DD.hhmmss", timestamp())"
   }
   run_volume_tags = {
     Name = "${var.ami_name}"
