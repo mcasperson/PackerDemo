@@ -11,7 +11,9 @@ Parameters:
   AmiId:
     Type: AWS::EC2::Image::Id
   GreenTargetGroup:
+    Type: String
   BlueTargetGroup:
+    Type: String
 Resources:
   BlueLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
