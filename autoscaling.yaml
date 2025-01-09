@@ -14,7 +14,7 @@ Resources:
   BlueLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
-      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
+      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template-blue
       LaunchTemplateData:
         ImageId: !Ref AmiId
         InstanceType: t3.small
@@ -32,7 +32,7 @@ Resources:
   GreenLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
-      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
+      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template-green
       LaunchTemplateData:
         ImageId: !Ref AmiId
         InstanceType: t3.small
