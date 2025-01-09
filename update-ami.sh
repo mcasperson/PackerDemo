@@ -9,7 +9,7 @@ fi
 
 LAUNCHTEMPLATE=$(aws autoscaling describe-auto-scaling-groups \
   --auto-scaling-group-names "${ASG}" \
-  --query 'AutoScalingGroups[0].LaunchTemplate' \
+  --query 'AutoScalingGroups[0].LaunchTemplate.LaunchTemplateId' \
   --output json)
 
 aws ec2 create-launch-template-version \
