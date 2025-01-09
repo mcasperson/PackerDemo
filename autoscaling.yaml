@@ -55,6 +55,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       HealthCheckGracePeriod: 30
+      DefaultInstanceWarmup: 30
       VPCZoneIdentifier:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2
@@ -69,6 +70,7 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       HealthCheckGracePeriod: 30
+      DefaultInstanceWarmup: 30
       VPCZoneIdentifier:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2
