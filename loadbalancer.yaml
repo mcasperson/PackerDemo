@@ -91,6 +91,9 @@ Outputs:
   MyListener:
     Description: The ALB listener
     Value: !Ref MyListener
+  MyListenerRule:
+    Description: The ALB listener rule
+    Value: !Ref MyListenerRule
   BlueTargetGroup:
     Description: The blue target group
     Value: !Ref BlueTargetGroup
