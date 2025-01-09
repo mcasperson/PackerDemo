@@ -80,7 +80,9 @@ build {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install -y apache2",
-      "sudo systemctl start apache2"]
+      "sudo systemctl start apache2",
+      "current_time=$(date)",
+      "echo \"<html><body><h1>Hello Octopus!</h1><p>Build time: $current_time</p></body></html>\" | sudo tee /var/www/html/index.html"]
     pause_before = "10s"
     timeout      = "10s"
   }
