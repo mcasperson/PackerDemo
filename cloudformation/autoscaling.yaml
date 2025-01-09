@@ -57,7 +57,7 @@ Resources:
       # These values priorities quickly replacing instances at the expense of availability
       InstanceMaintenancePolicy:
         MinHealthyPercentage: 0
-        MaxHealthyPercentage: 100
+        MaxHealthyPercentage: 200
       HealthCheckGracePeriod: 30
       DefaultInstanceWarmup: 10
       VPCZoneIdentifier:
@@ -76,7 +76,7 @@ Resources:
       # These values priorities quickly replacing instances at the expense of availability
       InstanceMaintenancePolicy:
         MinHealthyPercentage: 0
-        MaxHealthyPercentage: 100
+        MaxHealthyPercentage: 200
       HealthCheckGracePeriod: 10
       # Setting this value means new EC2 instances will be marked healthy faster
       # https://docs.aws.amazon.com/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
