@@ -1,11 +1,6 @@
 #!/bin/bash
 
-if [ "#{Octopus.Action[Find Offline Target Group].Output.InactiveGroupColor}" == "Green" ]
-then
-  ASG="#{AWS.ASG.Green}"
-else
-  ASG="#{AWS.ASG.Blue}"
-fi
+ASG="#{Octopus.Action[Find Offline Target ASG].Output.InactiveGroup}"
 
 LAUNCHTEMPLATE=$(aws autoscaling describe-auto-scaling-groups \
   --auto-scaling-group-names "${ASG}" \
