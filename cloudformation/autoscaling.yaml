@@ -59,7 +59,7 @@ Resources:
         MinHealthyPercentage: 0
         MaxHealthyPercentage: 100
       HealthCheckGracePeriod: 30
-      DefaultInstanceWarmup: 30
+      DefaultInstanceWarmup: 10
       VPCZoneIdentifier:
         - !Ref SubnetIdAz1
         - !Ref SubnetIdAz2
@@ -77,7 +77,7 @@ Resources:
       InstanceMaintenancePolicy:
         MinHealthyPercentage: 0
         MaxHealthyPercentage: 100
-      HealthCheckGracePeriod: 30
+      HealthCheckGracePeriod: 10
       # Setting this value means new EC2 instances will be marked healthy faster
       # https://docs.aws.amazon.com/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
       DefaultInstanceWarmup: 30
