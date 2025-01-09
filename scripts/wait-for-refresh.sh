@@ -3,8 +3,8 @@
 ASG=$1
 
 for i in {1..30}; do
-  EXISTINGREFRESHES=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${ASG}"
-  NOTSUCCESSFUL = $(jq '.InstanceRefreshes[] | select(.Status == "Pending" or .Status == "InProgress" or .Status == "Cancelling" or .Status == "RollbackInProgress" or .Status == "Baking")' <<< "${EXISTINGREFRESHES}")
+  EXISTINGREFRESHES=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${ASG}")
+  NOTSUCCESSFUL=$(jq '.InstanceRefreshes[] | select(.Status == "Pending" or .Status == "InProgress" or .Status == "Cancelling" or .Status == "RollbackInProgress" or .Status == "Baking")' <<< "${EXISTINGREFRESHES}")
   if [[ -z "${NOTSUCCESSFUL}" ]];
   then
     break
