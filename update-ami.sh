@@ -44,7 +44,7 @@ echo "Refreshing instances in Auto Scaling group ${ASG}..."
 write_verbose "${REFRESH}"
 
 # Wait for all instances to be healthy
-for i in {1..10}; do
+for i in {1..30}; do
   REFRESHSTATUS=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${ASG}" --instance-refresh-ids "${REFRESHTOKEN}")
   STATUS=$(jq -r '.InstanceRefreshes[0].Status' <<< "${REFRESHSTATUS}")
 
