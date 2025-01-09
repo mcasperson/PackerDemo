@@ -14,3 +14,12 @@ BLUEWEIGHT=$(jq -r '.Rules[] | select(.RuleArn == "#{AWS.ALB.ListenerRule}") | .
 
 echo "Green weight: ${GREENWEIGHT}"
 echo "Blue weight: ${BLUEWEIGHT}"
+
+
+if [ "${GREENWEIGHT}" == "100" ]; then
+  set_octopusvariable "ActiveGroupArn" "#{AWS.ALB.GreenTargetGroup}"
+  set_octopusvariable "InactiveGroupArn" "#{AWS.ALB.BlueTargetGroup}"
+else
+  set_octopusvariable "ActiveGroupArn" "#{AWS.ALB.BlueTargetGroup}"
+    set_octopusvariable "InactiveGroupArn" "#{AWS.ALB.GreenTargetGroup}"
+fi
