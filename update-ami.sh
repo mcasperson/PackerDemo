@@ -31,40 +31,28 @@ write_verbose "${MODIFYTEMPLATE}"
 
 REFRESH=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}")
 
+REFRESHTOKEN=$(jq -r '.InstanceRefreshId' <<< "${REFRESH}")
+
 echo "Refreshing instances in Auto Scaling group ${ASG}..."
 
 write_verbose "${REFRESH}"
 
-# Function to check the health status of instances in the Auto Scaling group
-check_instance_health() {
-  local instance_ids
-  instance_ids=$(aws autoscaling describe-auto-scaling-groups \
-    --auto-scaling-group-names "${ASG}" \
-    --query 'AutoScalingGroups[0].Instances[*].InstanceId' \
-    --output text)
-
-  for instance_id in ${instance_ids}; do
-    local health_status
-    health_status=$(aws ec2 describe-instance-status \
-      --instance-ids "${instance_id}" \
-      --query 'InstanceStatuses[0].InstanceStatus.Status' \
-      --output text)
-
-    if [[ "${health_status}" != "ok" ]]; then
-      return 1
-    fi
-  done
-
-  return 0
-}
-
 # Wait for all instances to be healthy
 for i in {1..10}; do
-  if check_instance_health
+  REFRESHSTATUS=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}" --instance-refresh-ids "${REFRESHTOKEN}")
+  STATUS=$(jq -r '.InstanceRefreshes[0].Status' <<< "${REFRESHSTATUS}")
+
+  write_verbose "${REFRESHSTATUS}"
+
+  if [[ "${STATUS}" == "Successful" ]];
   then
-    echo "All instances in Auto Scaling group ${ASG} are healthy!"
+    echo "Instance refresh succeeded"
     break
+  elif [[ "${STATUS}" == "Failed" ]];
+  then
+    echo "Instance refresh failed!"
+    exit 1
   fi
-  echo "Waiting for all instances in Auto Scaling group ${ASG} to be healthy..."
+  echo "Waiting for Auto Scaling group ${ASG} refresh to complete..."
   sleep 12
 done
