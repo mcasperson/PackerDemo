@@ -21,10 +21,10 @@
   },
   {
     "ParameterKey": "GreenTargetGroup",
-    "ParameterValue": "#{AWS.Parameter.SecurityGroupId}"
+    "ParameterValue": "#{AWS.Parameter.GreenTargetGroup}"
   },
   {
     "ParameterKey": "BlueTargetGroup",
-    "ParameterValue": "#{AWS.Parameter.SecurityGroupId}"
+    "ParameterValue": "#{AWS.Parameter.BlueTargetGroup}"
   }
 ]
