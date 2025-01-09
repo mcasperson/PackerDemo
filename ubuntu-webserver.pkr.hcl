@@ -9,7 +9,7 @@ packer {
 
 variable "ami_name" {
   type    = string
-  default = "packerdemo"
+  default = "packerdemo-${timestamp()}"
 }
 
 variable "aws_region" {
