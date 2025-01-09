@@ -55,10 +55,11 @@ write_verbose "${REFRESH}"
 for i in {1..30}; do
   REFRESHSTATUS=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${ASG}" --instance-refresh-ids "${REFRESHTOKEN}")
   STATUS=$(jq -r '.InstanceRefreshes[0].Status' <<< "${REFRESHSTATUS}")
+  PERCENTCOMPLETE=$(jq -r '.InstanceRefreshes[0].PercentageComplete' <<< "${REFRESHSTATUS}")
 
   write_verbose "${REFRESHSTATUS}"
 
-  if [[ "${STATUS}" == "Successful" ]];
+  if [[ "${STATUS}" == "Successful" || "${PERCENTCOMPLETE}" == "100" ]]
   then
     echo "Instance refresh succeeded"
     break
