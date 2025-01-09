@@ -39,7 +39,7 @@ write_verbose "${REFRESH}"
 
 # Wait for all instances to be healthy
 for i in {1..10}; do
-  REFRESHSTATUS=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}" --instance-refresh-ids "${REFRESHTOKEN}")
+  REFRESHSTATUS=$(aws autoscaling describe-instance-refresh --auto-scaling-group-name "${ASG}" --instance-refresh-ids "${REFRESHTOKEN}")
   STATUS=$(jq -r '.InstanceRefreshes[0].Status' <<< "${REFRESHSTATUS}")
 
   write_verbose "${REFRESHSTATUS}"
