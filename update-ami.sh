@@ -31,6 +31,12 @@ write_verbose "${MODIFYTEMPLATE}"
 
 REFRESH=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}")
 
+if [[ $? -ne 0 ]];
+then
+  echo "Failed to start instance refresh for Auto Scaling group ${ASG}"
+  exit 1
+fi
+
 REFRESHTOKEN=$(jq -r '.InstanceRefreshId' <<< "${REFRESH}")
 
 echo "Refreshing instances in Auto Scaling group ${ASG}..."
@@ -39,7 +45,7 @@ write_verbose "${REFRESH}"
 
 # Wait for all instances to be healthy
 for i in {1..10}; do
-  REFRESHSTATUS=$(aws autoscaling describe-instance-refresh --auto-scaling-group-name "${ASG}" --instance-refresh-ids "${REFRESHTOKEN}")
+  REFRESHSTATUS=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${ASG}" --instance-refresh-ids "${REFRESHTOKEN}")
   STATUS=$(jq -r '.InstanceRefreshes[0].Status' <<< "${REFRESHSTATUS}")
 
   write_verbose "${REFRESHSTATUS}"
