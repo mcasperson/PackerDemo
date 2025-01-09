@@ -1,0 +1,48 @@
+variable "AWS.Acocunt" {
+    type = "AmazonWebServicesAccount"
+
+    value "aws" {}
+}
+
+variable "AWS.ALB.BlueTargetGroup" {
+    value "arn:aws:elasticloadbalancing:ap-southeast-2:381713788115:targetgroup/OctopusBlueTargetGroup/56ea5120b600b1b8" {}
+}
+
+variable "AWS.ALB.GreenTargetGroup" {
+    value "arn:aws:elasticloadbalancing:ap-southeast-2:381713788115:targetgroup/OctopusGreenTargetGroup/8f3d728be86cdd89" {}
+}
+
+variable "AWS.ALB.Listener" {
+    value "arn:aws:elasticloadbalancing:ap-southeast-2:381713788115:listener/app/packer-alb/18c892689c5a55b0/2f62d16656fd5892" {}
+}
+
+variable "AWS.ALB.ListenerRule" {
+    value "arn:aws:elasticloadbalancing:ap-southeast-2:381713788115:listener-rule/app/packer-alb/18c892689c5a55b0/2f62d16656fd5892/77ef9b751cb87c73" {}
+}
+
+variable "AWS.AMI.ID" {
+    value "ami-0d87c967d37624022" {
+        prompt {
+            description = ""
+            display_settings = {
+                Octopus.ControlType = "Select"
+                Octopus.SelectOptions = <<-EOT
+                    ami-0d87c967d37624022|ami-0d87c967d37624022 (pink)
+                    ami-0da8191b241843a6f|ami-0da8191b241843a6f (red)
+                    ami-00660255849cb97e6|ami-00660255849cb97e6 (orange)
+                    ami-053ff10c67ab0820c|ami-053ff10c67ab0820c (green)
+                    EOT
+            }
+            label = ""
+            required = true
+        }
+    }
+}
+
+variable "AWS.ASG.Blue" {
+    value "PackerAutoScalingGroup-AutoScalingGroupBlue-OR64v5pUqk0c" {}
+}
+
+variable "AWS.ASG.Green" {
+    value "PackerAutoScalingGroup-AutoScalingGroupGreen-C1qQddr0Gbs7" {}
+}
