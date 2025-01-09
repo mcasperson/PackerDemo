@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# https://stackoverflow.com/questions/61074411/modify-aws-alb-traffic-distribution-using-aws-cli
 MODIFYRULE=$(aws elbv2 modify-rule \
   --rule-arn "#{AWS.ALB.ListenerRule}" \
   --default-actions \
