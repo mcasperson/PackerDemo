@@ -54,6 +54,10 @@ Resources:
   AutoScalingGroupGreen:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
+      # These values priorities quickly replacing instances at the expense of availability
+      InstanceMaintenancePolicy:
+        MinHealthyPercentage: 0
+        MaxHealthyPercentage: 100
       HealthCheckGracePeriod: 30
       DefaultInstanceWarmup: 30
       VPCZoneIdentifier:
@@ -69,6 +73,10 @@ Resources:
   AutoScalingGroupBlue:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
+      # These values priorities quickly replacing instances at the expense of availability
+      InstanceMaintenancePolicy:
+        MinHealthyPercentage: 0
+        MaxHealthyPercentage: 100
       HealthCheckGracePeriod: 30
       # Setting this value means new EC2 instances will be marked healthy faster
       # https://docs.aws.amazon.com/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
