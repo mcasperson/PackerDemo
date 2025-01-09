@@ -33,7 +33,7 @@ Resources:
       Name: OctopusGreenTargetGroup
       Port: 80
       Protocol: HTTP
-      TargetType: ip
+      TargetType: instance
       UnhealthyThresholdCount: 5
       VpcId: !Ref VpcId
   BlueTargetGroup:
@@ -51,7 +51,7 @@ Resources:
       Name: OctopusBlueTargetGroup
       Port: 80
       Protocol: HTTP
-      TargetType: ip
+      TargetType: instance
       UnhealthyThresholdCount: 5
       VpcId: !Ref VpcId
   MyListener:

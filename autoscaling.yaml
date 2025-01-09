@@ -11,9 +11,9 @@ Parameters:
   AmiId:
     Type: AWS::EC2::Image::Id
   GreenTargetGroup:
-    Type: String
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup::Id
   BlueTargetGroup:
-    Type: String
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup::Id
 Resources:
   BlueLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
