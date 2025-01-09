@@ -86,7 +86,7 @@ build {
       "sudo apt-get install -y apache2",
       "sudo systemctl start apache2",
       "current_time=$(date)",
-      "color=$($RANDOM % 10)",
+      "color=$(($RANDOM % 10))",
       "html_colors=(\"red\" \"blue\" \"green\" \"yellow\" \"purple\" \"orange\" \"pink\" \"brown\" \"black\" \"white\")",
       "echo \"<html><body><h1 style=\"color: $${html_colors[$color]}\">Hello Octopus!</h1><p>Build time: $current_time</p></body></html>\" | sudo tee /var/www/html/index.html"]
     pause_before = "10s"
