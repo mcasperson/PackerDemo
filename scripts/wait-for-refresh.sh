@@ -2,6 +2,17 @@
 
 ASG=$1
 
+for i in {1..30}; do
+  EXISTINGREFRESHES=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${ASG}"
+  NOTSUCCESSFUL = $(jq '.InstanceRefreshes[] | select(.Status == "Pending" or .Status == "InProgress" or .Status == "Cancelling" or .Status == "RollbackInProgress" or .Status == "Baking")' <<< "${EXISTINGREFRESHES}")
+  if [[ -z "${NOTSUCCESSFUL}" ]];
+  then
+    break
+  fi
+    echo "Waiting for existing Auto Scaling group ${ASG} refresh to complete..."
+    sleep 12
+done
+
 REFRESH=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}")
 
 if [[ $? -ne 0 ]];
