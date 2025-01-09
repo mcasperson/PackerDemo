@@ -35,7 +35,7 @@ for i in {1..30}; do
 
   write_verbose "${REFRESHSTATUS}"
 
-  if [[ "${STATUS}" == "Successful" || "${PERCENTCOMPLETE}" == "100" ]]
+  if [[ "${STATUS}" == "Successful" ]]
   then
     echo "Instance refresh succeeded"
     break
