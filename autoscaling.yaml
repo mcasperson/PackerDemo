@@ -10,6 +10,10 @@ Parameters:
     Type: AWS::EC2::SecurityGroup::Id
   AmiId:
     Type: AWS::EC2::Image::Id
+  GreenTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup::Id
+  BlueTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup::Id
 Resources:
   BlueLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
@@ -58,6 +62,8 @@ Resources:
         Version: !GetAtt GreenLaunchTemplate.LatestVersionNumber
       MaxSize: '1'
       MinSize: '1'
+      TargetGroupARNs:
+        - !Ref GreenTargetGroup
   AutoScalingGroupBlue:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -69,6 +75,8 @@ Resources:
         Version: !GetAtt BlueLaunchTemplate.LatestVersionNumber
       MaxSize: '1'
       MinSize: '1'
+      TargetGroupARNs:
+        - !Ref BlueTargetGroup
 Outputs:
   AutoScalingGroupGreenId:
     Value: !Ref AutoScalingGroupGreen
