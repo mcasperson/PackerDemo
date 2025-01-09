@@ -9,8 +9,8 @@ echo "${RULES}" > output.json
 
 new_octopusartifact "$PWD/output.json"
 
-GREENWEIGHT=$(jq -r '.Rules[] | select(.RuleArn == "#{AWS.ALB.Rule}") | .Actions[] | select(.Type == "forward") | .ForwardConfig | .TargetGroups[] | select(.TargetGroupArn == "#{AWS.ALB.GreenTargetGroup}" | .Weight)' <<< "${RULES}")
-BLUEWEIGHT=$(jq -r '.Rules[] | select(.RuleArn == "#{AWS.ALB.Rule}") | .Actions[] | select(.Type == "forward") | .ForwardConfig | .TargetGroups[] | select(.TargetGroupArn == "#{AWS.ALB.BlueTargetGroup}" | .Weight)' <<< "${RULES}")
+GREENWEIGHT=$(jq -r '.Rules[] | select(.RuleArn == "#{AWS.ALB.ListenerRule}") | .Actions[] | select(.Type == "forward") | .ForwardConfig | .TargetGroups[] | select(.TargetGroupArn == "#{AWS.ALB.GreenTargetGroup}") | .Weight' <<< "${RULES}")
+BLUEWEIGHT=$(jq -r '.Rules[] | select(.RuleArn == "#{AWS.ALB.ListenerRule}") | .Actions[] | select(.Type == "forward") | .ForwardConfig | .TargetGroups[] | select(.TargetGroupArn == "#{AWS.ALB.BlueTargetGroup}") | .Weight' <<< "${RULES}")
 
 echo "Green weight: ${GREENWEIGHT}"
 echo "Blue weight: ${BLUEWEIGHT}"
