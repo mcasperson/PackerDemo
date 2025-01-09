@@ -12,11 +12,17 @@ LAUNCHTEMPLATE=$(aws autoscaling describe-auto-scaling-groups \
   --query 'AutoScalingGroups[0].LaunchTemplate.LaunchTemplateId' \
   --output text)
 
-aws ec2 create-launch-template-version \
+NEWVERSION=$(aws ec2 create-launch-template-version \
     --launch-template-id "${LAUNCHTEMPLATE}" \
     --version-description "#{Octopus.Release.Number}" \
     --source-version 1 \
-    --launch-template-data "ImageId=#{AWS.AMI.ID}"
+    --launch-template-data "ImageId=#{AWS.AMI.ID}")
+
+NEWVERSIONNUMBER=$(jq -r '.LaunchTemplateVersion.VersionNumber' <<< "${NEWVERSION}")
+
+aws ec2 modify-launch-template \
+    --launch-template-id "${LAUNCHTEMPLATE}" \
+    --default-version "${NEWVERSIONNUMBER}"
 
 aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}"
 
@@ -47,6 +53,7 @@ check_instance_health() {
 for i in {1..10}; do
   if check_instance_health
   then
+    echo "All instances in Auto Scaling group ${ASG} are healthy!"
     break
   fi
   echo "Waiting for all instances in Auto Scaling group ${ASG} to be healthy..."
