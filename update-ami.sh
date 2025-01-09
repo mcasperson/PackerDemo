@@ -29,6 +29,14 @@ echo "Set default version for launch template ${LAUNCHTEMPLATE} to ${NEWVERSIONN
 
 write_verbose "${MODIFYTEMPLATE}"
 
+UPDATELAUNCHTEMPLATEVERSION=$(aws autoscaling update-auto-scaling-group \
+  --auto-scaling-group-name "${ASG}" \
+  --launch-template "LaunchTemplateId=${LAUNCHTEMPLATE},Version=${NEWVERSIONNUMBER}")
+
+echo "Updated the ASG launch template version to ${NEWVERSIONNUMBER}..."
+
+write_verbose "${UPDATELAUNCHTEMPLATEVERSION}"
+
 REFRESH=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${ASG}")
 
 if [[ $? -ne 0 ]];
