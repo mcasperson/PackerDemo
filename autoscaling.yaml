@@ -70,6 +70,8 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       HealthCheckGracePeriod: 30
+      # Setting this value means new EC2 instances will be marked healthy faster
+      # https://docs.aws.amazon.com/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
       DefaultInstanceWarmup: 30
       VPCZoneIdentifier:
         - !Ref SubnetIdAz1
