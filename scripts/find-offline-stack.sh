@@ -8,12 +8,12 @@ BLUETARGETGROUP=${4:-'#{AWSBlueGreen.AWS.BlueTargetGroup}'}
 echoerror() { echo "$@" 1>&2; }
 
 if ! command -v "aws" &> /dev/null; then
-  echoerror "aws is not installed"
+  echoerror "You must have the AWS CLI installed for this step."
   exit 1
 fi
 
 if ! command -v "jq" &> /dev/null; then
-  echoerror "jq is not installed"
+  echoerror "You must have jq installed for this step."
   exit 1
 fi
 
