@@ -1,34 +1,48 @@
 #!/bin/bash
 
-RULE=$1
-GREENTARGETGROUP=$2
-BLUETARGETGROUP=$3
+LISTENER=$1
+RULE=$2
+GREENTARGETGROUP=$3
+BLUETARGETGROUP=$4
 
 echoerror() { echo "$@" 1>&2; }
 
+# Validate the arguments
+
+if [[ -z "${LISTENER}" ]]; then
+  echoerror "Please provide the ARN of the listener as the first argument"
+  exit 1
+fi
+
 if [[ -z "${RULE}" ]]; then
-  echoerror "Please provide the ARN of the listener rule as the first argument"
+  echoerror "Please provide the ARN of the listener rule as the second argument"
   exit 1
 fi
 
 if [[ -z "${GREENTARGETGROUP}" ]]; then
-  echoerror "Please provide the ARN of the green target group as the second argument"
+  echoerror "Please provide the ARN of the green target group as the third argument"
   exit 1
 fi
 
 if [[ -z "${BLUETARGETGROUP}" ]]; then
-  echoerror "Please provide the ARN of the blue target group as the third argument"
+  echoerror "Please provide the ARN of the blue target group as the fourth argument"
   exit 1
 fi
 
+# Get the JSON representation of the listener rules
+
 RULES=$(aws elbv2 describe-rules \
-  --listener-arn "#{AWS.ALB.Listener}" \
+  --listener-arn "${LISTENER}" \
   --output json)
 
 write_verbose "${RULES}"
 
+# Find the weight assigned to each of the target groups.
+
 GREENWEIGHT=$(jq -r ".Rules[] | select(.RuleArn == \"${RULE}\") | .Actions[] | select(.Type == \"forward\") | .ForwardConfig | .TargetGroups[] | select(.TargetGroupArn == \"${GREENTARGETGROUP}\") | .Weight" <<< "${RULES}")
 BLUEWEIGHT=$(jq -r ".Rules[] | select(.RuleArn == \"${RULE}\") | .Actions[] | select(.Type == \"forward\") | .ForwardConfig | .TargetGroups[] | select(.TargetGroupArn == \"${BLUETARGETGROUP}\") | .Weight" <<< "${RULES}")
+
+# Validation that we found the green and blue target groups.
 
 if [[ -z "${GREENWEIGHT}" ]]; then
   echoerror "Failed to find the target group ${GREENTARGETGROUP} in the listener rule ${RULE}"
@@ -44,6 +58,12 @@ fi
 
 echo "Green weight: ${GREENWEIGHT}"
 echo "Blue weight: ${BLUEWEIGHT}"
+
+# Set the output variables identifying which target group is active and which is inactive.
+# Note that we assume the target groups are either active or inactive (i.e. all traffic and no traffic).
+# Load balancers support more complex routing rules, but we assume a simple blue-green deployment.
+# If the green target group has traffic, it is considered active, and the blue target group is considered inactive.
+# If the green target group has no traffic, it is considered inactive, and the blue target group is considered active.
 
 if [ "${GREENWEIGHT}" != "0" ]; then
   echo "Green target group is active, blue target group is inactive"
