@@ -4,6 +4,16 @@ ASG=$1
 
 echoerror() { echo "$@" 1>&2; }
 
+if ! command -v "aws" &> /dev/null; then
+  echoerror "You must have the AWS CLI installed for this step."
+  exit 1
+fi
+
+if ! command -v "jq" &> /dev/null; then
+  echoerror "You must have jq installed for this step."
+  exit 1
+fi
+
 if [[ -z "${ASG}" ]]; then
   echoerror "Please provide the name of the Auto Scaling group as the first argument"
   exit 1

@@ -6,6 +6,11 @@ ONLINEGROUP=$3
 
 echoerror() { echo "$@" 1>&2; }
 
+if ! command -v "aws" &> /dev/null; then
+  echoerror "You must have the AWS CLI installed for this step."
+  exit 1
+fi
+
 if [[ -z "${RULE}" ]]; then
   echoerror "Please provide the ARN of the listener rule as the first argument"
   exit 1
