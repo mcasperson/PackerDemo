@@ -50,6 +50,12 @@ for i in {1..30}; do
   STATUS=$(jq -r '.InstanceRefreshes[0].Status' <<< "${REFRESHSTATUS}")
   PERCENTCOMPLETE=$(jq -r '.InstanceRefreshes[0].PercentageComplete' <<< "${REFRESHSTATUS}")
 
+  # Treat a null percentage as 0
+  if [[ "${PERCENTCOMPLETE}" == "null" ]]
+  then
+    PERCENTCOMPLETE=0
+  fi
+
   write_verbose "${REFRESHSTATUS}"
 
   if [[ "${STATUS}" == "Successful" ]]
