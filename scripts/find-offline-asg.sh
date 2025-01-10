@@ -24,7 +24,7 @@ then
   exit 1
 fi
 
-if [[ "${INACTIVECOLOR}" == "Green" ]]
+if [[ "${INACTIVECOLOR^^}" == "GREEN" ]]
 then
   set_octopusvariable "ActiveGroup" "${BLUEASG}"
   set_octopusvariable "InactiveGroup" "${GREENASG}"
