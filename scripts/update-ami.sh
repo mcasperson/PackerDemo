@@ -2,7 +2,7 @@
 
 ASG=${1:-'#{AWSBlueGreen.AWS.ASG}'}
 AMI=${2:-'#{AWSBlueGreen.AWS.AMI}'}
-VERSIONDESCRIPTION=${2:-'#{AWSBlueGreen.AWS.LaunchTemplateDescription}'}
+VERSIONDESCRIPTION=${3:-'#{AWSBlueGreen.AWS.LaunchTemplateDescription}'}
 
 echoerror() { echo "$@" 1>&2; }
 
