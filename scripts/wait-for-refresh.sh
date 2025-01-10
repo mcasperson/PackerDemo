@@ -2,8 +2,10 @@
 
 ASG=$1
 
+echoerror() { echo "$@" 1>&2; }
+
 if [[ -z "${ASG}" ]]; then
-  echo "Please provide the name of the Auto Scaling group as the first argument"
+  echoerror "Please provide the name of the Auto Scaling group as the first argument"
   exit 1
 fi
 
@@ -22,7 +24,7 @@ REFRESH=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "${AS
 
 if [[ $? -ne 0 ]];
 then
-  echo "Failed to start instance refresh for Auto Scaling group ${ASG}"
+  echoerror "Failed to start instance refresh for Auto Scaling group ${ASG}"
   exit 1
 fi
 

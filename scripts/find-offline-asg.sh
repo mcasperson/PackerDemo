@@ -4,21 +4,23 @@ INACTIVECOLOR=$1
 GREENASG=$2
 BLUEASG=$3
 
+echoerror() { echo "$@" 1>&2; }
+
 if [[ -z "${INACTIVECOLOR}" ]]
 then
-  echo "Please provide the color of the inactive Auto Scaling group (Green or Blue) as the first argument"
+  echoerror "Please provide the color of the inactive Auto Scaling group (Green or Blue) as the first argument"
   exit 1
 fi
 
 if [[ -z "${GREENASG}" ]]
 then
-  echo "Please provide the name of the Green Auto Scaling group as the second argument"
+  echoerror "Please provide the name of the Green Auto Scaling group as the second argument"
   exit 1
 fi
 
 if [[ -z "${BLUEASG}" ]]
 then
-  echo "Please provide the name of the Blue Auto Scaling group as the third argument"
+  echoerror "Please provide the name of the Blue Auto Scaling group as the third argument"
   exit 1
 fi
 

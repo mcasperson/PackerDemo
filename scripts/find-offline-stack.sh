@@ -4,18 +4,20 @@ RULE=$1
 GREENTARGETGROUP=$2
 BLUETARGETGROUP=$3
 
+echoerror() { echo "$@" 1>&2; }
+
 if [[ -z "${RULE}" ]]; then
-  echo "Please provide the ARN of the listener rule as the first argument"
+  echoerror "Please provide the ARN of the listener rule as the first argument"
   exit 1
 fi
 
 if [[ -z "${GREENTARGETGROUP}" ]]; then
-  echo "Please provide the ARN of the green target group as the second argument"
+  echoerror "Please provide the ARN of the green target group as the second argument"
   exit 1
 fi
 
 if [[ -z "${BLUETARGETGROUP}" ]]; then
-  echo "Please provide the ARN of the blue target group as the third argument"
+  echoerror "Please provide the ARN of the blue target group as the third argument"
   exit 1
 fi
 

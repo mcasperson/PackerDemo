@@ -4,18 +4,20 @@ ASG=$1
 AMI=$2
 VERSIONDESCRIPTION=$3
 
+echoerror() { echo "$@" 1>&2; }
+
 if [[ -z "${ASG}" ]]; then
-  echo "Please provide the name of the Auto Scaling group as the first argument"
+  echoerror "Please provide the name of the Auto Scaling group as the first argument"
   exit 1
 fi
 
 if [[ -z "${AMI}" ]]; then
-  echo "Please provide the ID of the new AMI as the second argument"
+  echoerror "Please provide the ID of the new AMI as the second argument"
   exit 1
 fi
 
 if [[ -z "${VERSIONDESCRIPTION}" ]]; then
-  echo "Please provide a description for the new launch template version as the third argument"
+  echoerror "Please provide a description for the new launch template version as the third argument"
   exit 1
 fi
 
