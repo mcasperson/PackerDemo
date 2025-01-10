@@ -2,10 +2,20 @@
 
 LISTENER=${1:-'#{AWSBlueGreen.AWS.ListenerARN}'}
 RULE=${2:-'#{AWSBlueGreen.AWS.RuleArn}'}
-GREENTARGETGROUP=${3:-'#{AWSBlueGreen.AWS.GreeneTargetGroup}'}
+GREENTARGETGROUP=${3:-'#{AWSBlueGreen.AWS.GreenTargetGroup}'}
 BLUETARGETGROUP=${4:-'#{AWSBlueGreen.AWS.BlueTargetGroup}'}
 
 echoerror() { echo "$@" 1>&2; }
+
+if ! command -v "aws" &> /dev/null; then
+  echoerror "aws is not installed"
+  exit 1
+fi
+
+if ! command -v "jq" &> /dev/null; then
+  echoerror "jq is not installed"
+  exit 1
+fi
 
 # Validate the arguments
 
