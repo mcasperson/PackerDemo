@@ -61,6 +61,6 @@ for i in {1..30}; do
     echo "Instance refresh failed!"
     exit 1
   fi
-  echo "Waiting for Auto Scaling group ${ASG} refresh to complete..."
+  echo "Waiting for Auto Scaling group ${ASG} refresh to complete (${PERCENTCOMPLETE}%)..."
   sleep 12
 done
