@@ -1,8 +1,8 @@
 #!/bin/bash
 
-RULE=$1
-OFFLINEGROUP=$2
-ONLINEGROUP=$3
+RULE=${1:-'#{AWSBlueGreen.AWS.RuleArn}'}
+OFFLINEGROUP=${2:-'#{AWSBlueGreen.AWS.OfflineTargetGroup}'}
+ONLINEGROUP=${3:-'#{AWSBlueGreen.AWS.OnlineTargetGroup}'}
 
 echoerror() { echo "$@" 1>&2; }
 

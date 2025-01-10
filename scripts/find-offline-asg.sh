@@ -1,8 +1,8 @@
 #!/bin/bash
 
-INACTIVECOLOR=$1
-GREENASG=$2
-BLUEASG=$3
+INACTIVECOLOR=${1:-'#{AWSBlueGreen.InactiveColor}'}
+GREENASG=${2:-'#{AWSBlueGreen.AWS.GreenASGARN}'}
+BLUEASG=${3:-'#{AWSBlueGreen.AWS.BlueASGARN}'}
 
 echoerror() { echo "$@" 1>&2; }
 

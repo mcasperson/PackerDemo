@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ASG=$1
-AMI=$2
-VERSIONDESCRIPTION=$3
+ASG=${1:-'#{AWSBlueGreen.AWS.ASGARN}'}
+AMI=${2:-'#{AWSBlueGreen.AWS.AMI}'}
+VERSIONDESCRIPTION=${2:-'#{AWSBlueGreen.AWS.LaunchTemplateDescription}'}
 
 echoerror() { echo "$@" 1>&2; }
 
