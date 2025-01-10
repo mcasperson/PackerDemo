@@ -31,14 +31,14 @@ GREENWEIGHT=$(jq -r ".Rules[] | select(.RuleArn == \"${RULE}\") | .Actions[] | s
 BLUEWEIGHT=$(jq -r ".Rules[] | select(.RuleArn == \"${RULE}\") | .Actions[] | select(.Type == \"forward\") | .ForwardConfig | .TargetGroups[] | select(.TargetGroupArn == \"${BLUETARGETGROUP}\") | .Weight" <<< "${RULES}")
 
 if [[ -z "${GREENWEIGHT}" ]]; then
-  echo "Failed to find the target group ${GREENTARGETGROUP} in the listener rule ${RULE}"
-  echo "Double check that the target group exists and has been associated with the load balancer"
+  echoerror "Failed to find the target group ${GREENTARGETGROUP} in the listener rule ${RULE}"
+  echoerror "Double check that the target group exists and has been associated with the load balancer"
   exit 1
 fi
 
 if [[ -z "${BLUEWEIGHT}" ]]; then
-  echo "Failed to find the target group ${BLUETARGETGROUP} in the listener rule ${RULE}"
-  echo "Double check that the target group exists and has been associated with the load balancer"
+  echoerror "Failed to find the target group ${BLUETARGETGROUP} in the listener rule ${RULE}"
+  echoerror "Double check that the target group exists and has been associated with the load balancer"
   exit 1
 fi
 
