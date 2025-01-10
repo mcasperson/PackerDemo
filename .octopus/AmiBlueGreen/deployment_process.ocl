@@ -10,7 +10,7 @@ step "update-ami-id" {
             Octopus.Action.AwsAccount.Variable = "AWS.Acocunt"
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.Script.ScriptFileName = "scripts/find-offline-stack.sh"
-            Octopus.Action.Script.ScriptParameters = "#{AWS.ALB.ListenerRule} #{AWS.ALB.GreenTargetGroup} #{AWS.ALB.BlueTargetGroup}"
+            Octopus.Action.Script.ScriptParameters = "#{AWS.ALB.Listener} #{AWS.ALB.ListenerRule} #{AWS.ALB.GreenTargetGroup} #{AWS.ALB.BlueTargetGroup}"
             Octopus.Action.Script.ScriptSource = "GitRepository"
             OctopusUseBundledTooling = "False"
         }
