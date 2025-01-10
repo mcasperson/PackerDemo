@@ -7,12 +7,12 @@ VERSIONDESCRIPTION=${3:-'#{AWSBlueGreen.AWS.LaunchTemplateDescription | Trim}'}
 echoerror() { echo "$@" 1>&2; }
 
 if ! command -v "aws" &> /dev/null; then
-  echoerror "You must have the AWS CLI installed for this step."
+  echoerror "You must have the AWS CLI installed for this step. Consider using a Container Image - https://octopus.com/docs/projects/steps/execution-containers-for-workers#how-to-use-execution-containers-for-workers"
   exit 1
 fi
 
 if ! command -v "jq" &> /dev/null; then
-  echoerror "You must have jq installed for this step."
+  echoerror "You must have jq installed for this step. Consider using a Container Image - https://octopus.com/docs/projects/steps/execution-containers-for-workers#how-to-use-execution-containers-for-workers"
   exit 1
 fi
 
