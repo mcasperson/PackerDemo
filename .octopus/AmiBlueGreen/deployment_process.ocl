@@ -62,7 +62,7 @@ step "update-ami-id-1" {
             Octopus.Action.AwsAccount.Variable = "AWS.Acocunt"
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.Script.ScriptFileName = "scripts/update-ami.sh"
-            Octopus.Action.Script.ScriptParameters = "#{Octopus.Action[Find Offline Target ASG].Output.InactiveGroup}"
+            Octopus.Action.Script.ScriptParameters = "#{Octopus.Action[Find Offline Target ASG].Output.InactiveGroup} #{AWS.AMI.ID} #{Octopus.Release.Number}"
             Octopus.Action.Script.ScriptSource = "GitRepository"
             OctopusUseBundledTooling = "False"
         }
