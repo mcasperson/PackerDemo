@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ASG=${1:-'#{AWSBlueGreen.AWS.ASGARN}'}
+ASG=${1:-'#{AWSBlueGreen.AWS.ASG}'}
 
 echoerror() { echo "$@" 1>&2; }
 
