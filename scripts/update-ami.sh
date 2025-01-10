@@ -1,6 +1,23 @@
 #!/bin/bash
 
 ASG=$1
+AMI=$2
+VERSIONDESCRIPTION=$3
+
+if [[ -z "${ASG}" ]]; then
+  echo "Please provide the name of the Auto Scaling group as the first argument"
+  exit 1
+fi
+
+if [[ -z "${AMI}" ]]; then
+  echo "Please provide the ID of the new AMI as the second argument"
+  exit 1
+fi
+
+if [[ -z "${VERSIONDESCRIPTION}" ]]; then
+  echo "Please provide a description for the new launch template version as the third argument"
+  exit 1
+fi
 
 LAUNCHTEMPLATE=$(aws autoscaling describe-auto-scaling-groups \
   --auto-scaling-group-names "${ASG}" \
@@ -11,9 +28,9 @@ echo "Modifying launch template ${LAUNCHTEMPLATE} for Auto Scaling group ${ASG}.
 
 NEWVERSION=$(aws ec2 create-launch-template-version \
     --launch-template-id "${LAUNCHTEMPLATE}" \
-    --version-description "#{Octopus.Release.Number}" \
+    --version-description "${VERSIONDESCRIPTION}" \
     --source-version 1 \
-    --launch-template-data "ImageId=#{AWS.AMI.ID}")
+    --launch-template-data "ImageId=${AMI}")
 
 NEWVERSIONNUMBER=$(jq -r '.LaunchTemplateVersion.VersionNumber' <<< "${NEWVERSION}")
 

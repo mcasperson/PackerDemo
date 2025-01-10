@@ -2,6 +2,11 @@
 
 ASG=$1
 
+if [[ -z "${ASG}" ]]; then
+  echo "Please provide the name of the Auto Scaling group as the first argument"
+  exit 1
+fi
+
 for i in {1..30}; do
   EXISTINGREFRESHES=$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "${ASG}")
   NOTSUCCESSFUL=$(jq '.InstanceRefreshes[] | select(.Status == "Pending" or .Status == "InProgress" or .Status == "Cancelling" or .Status == "RollbackInProgress" or .Status == "Baking")' <<< "${EXISTINGREFRESHES}")
