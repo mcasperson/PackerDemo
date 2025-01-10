@@ -2,8 +2,8 @@
 
 LISTENER=${1:-'#{AWSBlueGreen.AWS.ListenerARN}'}
 RULE=${2:-'#{AWSBlueGreen.AWS.RuleArn}'}
-GREENTARGETGROUP=${3:'#{AWSBlueGreen.AWS.GreeneTargetGroup}'}
-BLUETARGETGROUP=${4:'#{AWSBlueGreen.AWS.BlueTargetGroup}'}
+GREENTARGETGROUP=${3:-'#{AWSBlueGreen.AWS.GreeneTargetGroup}'}
+BLUETARGETGROUP=${4:-'#{AWSBlueGreen.AWS.BlueTargetGroup}'}
 
 echoerror() { echo "$@" 1>&2; }
 
