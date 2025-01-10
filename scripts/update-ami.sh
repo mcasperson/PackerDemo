@@ -46,7 +46,7 @@ NEWVERSION=$(aws ec2 create-launch-template-version \
 
 NEWVERSIONNUMBER=$(jq -r '.LaunchTemplateVersion.VersionNumber' <<< "${NEWVERSION}")
 
-echo "Set AMI for launch template ${LAUNCHTEMPLATE} to #{AWS.AMI.ID}, generating new version ${NEWVERSIONNUMBER}..."
+echo "Set AMI for launch template ${LAUNCHTEMPLATE} to ${AMI}, generating new version ${NEWVERSIONNUMBER}..."
 
 write_verbose "${NEWVERSION}"
 
