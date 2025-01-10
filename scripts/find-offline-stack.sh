@@ -1,9 +1,9 @@
 #!/bin/bash
 
-LISTENER=${1:-'#{AWSBlueGreen.AWS.ListenerARN}'}
-RULE=${2:-'#{AWSBlueGreen.AWS.RuleArn}'}
-GREENTARGETGROUP=${3:-'#{AWSBlueGreen.AWS.GreenTargetGroup}'}
-BLUETARGETGROUP=${4:-'#{AWSBlueGreen.AWS.BlueTargetGroup}'}
+LISTENER=${1:-'#{AWSBlueGreen.AWS.ListenerARN | Trim}'}
+RULE=${2:-'#{AWSBlueGreen.AWS.RuleArn | Trim}'}
+GREENTARGETGROUP=${3:-'#{AWSBlueGreen.AWS.GreenTargetGroup | Trim}'}
+BLUETARGETGROUP=${4:-'#{AWSBlueGreen.AWS.BlueTargetGroup | Trim}'}
 
 echoerror() { echo "$@" 1>&2; }
 
