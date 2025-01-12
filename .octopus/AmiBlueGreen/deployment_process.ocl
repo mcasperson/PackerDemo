@@ -156,3 +156,21 @@ step "show-url" {
         worker_pool = "hosted-ubuntu"
     }
 }
+
+step "aws-find-blue-green-target-group" {
+    name = "AWS - Find Blue-Green Target Group"
+
+    action {
+        properties = {
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.BlueTargetGroup = "#{AWS.ALB.BlueTargetGroup}"
+            AWSBlueGreen.AWS.GreenTargetGroup = "#{AWS.ALB.GreenTargetGroup}"
+            AWSBlueGreen.AWS.ListenerARN = "#{AWS.ALB.Listener}"
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            AWSBlueGreen.AWS.RuleArn = "#{AWS.ALB.ListenerRule}"
+            Octopus.Action.Template.Id = "ActionTemplates-4146"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool = "hosted-ubuntu"
+    }
+}
