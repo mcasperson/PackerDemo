@@ -196,3 +196,25 @@ step "aws-find-blue-green-asg" {
         }
     }
 }
+
+step "aws-update-launch-template-ami" {
+    name = "AWS - Update Launch Template AMI"
+
+    action {
+        properties = {
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.AMI = "#{AWS.AMI.ID}"
+            AWSBlueGreen.AWS.ASG = "#{Octopus.Action[AWS - Find Blue-Green ASG].Output.InactiveGroup} "
+            AWSBlueGreen.AWS.LaunchTemplateDescription = "#{Octopus.Release.Number}"
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            Octopus.Action.Template.Id = "ActionTemplates-4148"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "dockerhub"
+            image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
+        }
+    }
+}
