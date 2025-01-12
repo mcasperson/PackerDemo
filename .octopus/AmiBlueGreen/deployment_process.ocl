@@ -163,6 +163,11 @@ step "aws-find-blue-green-target-group" {
             Octopus.Action.Template.Version = "1"
         }
         worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "dockerhub"
+            image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
+        }
     }
 }
 
