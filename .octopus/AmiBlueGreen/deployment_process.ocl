@@ -218,3 +218,23 @@ step "aws-update-launch-template-ami" {
         }
     }
 }
+
+step "aws-initiate-instance-refresh" {
+    name = "AWS - Initiate Instance Refresh"
+
+    action {
+        properties = {
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.ASG = "#{Octopus.Action[AWS - Find Blue-Green ASG].Output.InactiveGroup} "
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            Octopus.Action.Template.Id = "ActionTemplates-4149"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "dockerhub"
+            image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
+        }
+    }
+}
