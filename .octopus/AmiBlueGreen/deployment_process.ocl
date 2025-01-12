@@ -3,6 +3,7 @@ step "update-ami-id" {
 
     action {
         action_type = "Octopus.AwsRunScript"
+        is_disabled = true
         properties = {
             Octopus.Action.Aws.AssumeRole = "False"
             Octopus.Action.Aws.Region = "ap-southeast-2"
@@ -34,6 +35,7 @@ step "find-offline-target-asg" {
 
     action {
         action_type = "Octopus.Script"
+        is_disabled = true
         properties = {
             Octopus.Action.GitRepository.Source = "External"
             Octopus.Action.Script.ScriptFileName = "scripts/find-offline-asg.sh"
@@ -55,6 +57,7 @@ step "update-ami-id-1" {
 
     action {
         action_type = "Octopus.AwsRunScript"
+        is_disabled = true
         properties = {
             Octopus.Action.Aws.AssumeRole = "False"
             Octopus.Action.Aws.Region = "ap-southeast-2"
@@ -86,6 +89,7 @@ step "wait-for-refresh" {
 
     action {
         action_type = "Octopus.AwsRunScript"
+        is_disabled = true
         properties = {
             Octopus.Action.Aws.AssumeRole = "False"
             Octopus.Action.Aws.Region = "ap-southeast-2"
@@ -117,6 +121,7 @@ step "switch-traffic" {
 
     action {
         action_type = "Octopus.AwsRunScript"
+        is_disabled = true
         properties = {
             Octopus.Action.Aws.AssumeRole = "False"
             Octopus.Action.Aws.Region = "ap-southeast-2"
@@ -140,20 +145,6 @@ step "switch-traffic" {
             git_credential_type = "Anonymous"
             repository_uri = "https://github.com/mcasperson/PackerDemo.git"
         }
-    }
-}
-
-step "show-url" {
-    name = "Show URL"
-
-    action {
-        action_type = "Octopus.Script"
-        properties = {
-            Octopus.Action.Script.ScriptBody = "write_highlight \"[http://packer-alb-575106977.ap-southeast-2.elb.amazonaws.com/](http://packer-alb-575106977.ap-southeast-2.elb.amazonaws.com/)\""
-            Octopus.Action.Script.ScriptSource = "Inline"
-            Octopus.Action.Script.Syntax = "Bash"
-        }
-        worker_pool = "hosted-ubuntu"
     }
 }
 
@@ -258,5 +249,19 @@ step "aws-set-blue-green-target-group" {
             feed = "dockerhub"
             image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
         }
+    }
+}
+
+step "show-url" {
+    name = "Show URL"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.Script.ScriptBody = "write_highlight \"[http://packer-alb-575106977.ap-southeast-2.elb.amazonaws.com/](http://packer-alb-575106977.ap-southeast-2.elb.amazonaws.com/)\""
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+        }
+        worker_pool = "hosted-ubuntu"
     }
 }
