@@ -238,3 +238,25 @@ step "aws-initiate-instance-refresh" {
         }
     }
 }
+
+step "aws-set-blue-green-target-group" {
+    name = "AWS - Set Blue-Green Target Group"
+
+    action {
+        properties = {
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.OfflineTargetGroup = "#{Octopus.Action[AWS - Find Blue-Green Target Group].Output.ActiveGroupArn}"
+            AWSBlueGreen.AWS.OnlineTargetGroup = "#{Octopus.Action[AWS - Find Blue-Green Target Group].Output.InactiveGroupArn}"
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            AWSBlueGreen.AWS.RuleArn = "#{AWS.ALB.ListenerRule}"
+            Octopus.Action.Template.Id = "ActionTemplates-4150"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "dockerhub"
+            image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
+        }
+    }
+}
