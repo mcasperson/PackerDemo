@@ -46,3 +46,7 @@ variable "AWS.AMI.ID" {
         }
     }
 }
+
+variable "AWS.Region" {
+    value "ap-southeast-2" {}
+}

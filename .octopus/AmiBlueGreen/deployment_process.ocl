@@ -1,18 +1,16 @@
-step "update-ami-id" {
-    name = "Find Offline Target Group"
+step "aws-find-blue-green-target-group" {
+    name = "AWS - Find Blue-Green Target Group"
 
     action {
-        action_type = "Octopus.AwsRunScript"
         properties = {
-            Octopus.Action.Aws.AssumeRole = "False"
-            Octopus.Action.Aws.Region = "ap-southeast-2"
-            Octopus.Action.AwsAccount.UseInstanceRole = "False"
-            Octopus.Action.AwsAccount.Variable = "AWS.Acocunt"
-            Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Script.ScriptFileName = "scripts/find-offline-stack.sh"
-            Octopus.Action.Script.ScriptParameters = "#{AWS.ALB.Listener} #{AWS.ALB.ListenerRule} #{AWS.ALB.GreenTargetGroup} #{AWS.ALB.BlueTargetGroup}"
-            Octopus.Action.Script.ScriptSource = "GitRepository"
-            OctopusUseBundledTooling = "False"
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.BlueTargetGroup = "#{AWS.ALB.BlueTargetGroup}"
+            AWSBlueGreen.AWS.GreenTargetGroup = "#{AWS.ALB.GreenTargetGroup}"
+            AWSBlueGreen.AWS.ListenerARN = "#{AWS.ALB.Listener}"
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            AWSBlueGreen.AWS.RuleArn = "#{AWS.ALB.ListenerRule}"
+            Octopus.Action.Template.Id = "ActionTemplates-4146"
+            Octopus.Action.Template.Version = "1"
         }
         worker_pool = "hosted-ubuntu"
 
@@ -20,51 +18,21 @@ step "update-ami-id" {
             feed = "dockerhub"
             image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
         }
-
-        git_dependencies {
-            default_branch = "main"
-            git_credential_type = "Anonymous"
-            repository_uri = "https://github.com/mcasperson/PackerDemo.git"
-        }
     }
 }
 
-step "find-offline-target-asg" {
-    name = "Find Offline Target ASG"
+step "aws-find-blue-green-asg" {
+    name = "AWS - Find Blue-Green ASG"
 
     action {
-        action_type = "Octopus.Script"
         properties = {
-            Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Script.ScriptFileName = "scripts/find-offline-asg.sh"
-            Octopus.Action.Script.ScriptParameters = "#{Octopus.Action[Find Offline Target Group].Output.InactiveGroupColor} #{AWS.ASG.Green} #{AWS.ASG.Blue}"
-            Octopus.Action.Script.ScriptSource = "GitRepository"
-        }
-        worker_pool = "hosted-ubuntu"
-
-        git_dependencies {
-            default_branch = "main"
-            git_credential_type = "Anonymous"
-            repository_uri = "https://github.com/mcasperson/PackerDemo.git"
-        }
-    }
-}
-
-step "update-ami-id-1" {
-    name = "Update AMI ID"
-
-    action {
-        action_type = "Octopus.AwsRunScript"
-        properties = {
-            Octopus.Action.Aws.AssumeRole = "False"
-            Octopus.Action.Aws.Region = "ap-southeast-2"
-            Octopus.Action.AwsAccount.UseInstanceRole = "False"
-            Octopus.Action.AwsAccount.Variable = "AWS.Acocunt"
-            Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Script.ScriptFileName = "scripts/update-ami.sh"
-            Octopus.Action.Script.ScriptParameters = "#{Octopus.Action[Find Offline Target ASG].Output.InactiveGroup} #{AWS.AMI.ID} #{Octopus.Release.Number}"
-            Octopus.Action.Script.ScriptSource = "GitRepository"
-            OctopusUseBundledTooling = "False"
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.BlueASG = "#{AWS.ASG.Blue}"
+            AWSBlueGreen.AWS.GreenASG = "#{AWS.ASG.Green}"
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            AWSBlueGreen.InactiveColor = "#{Octopus.Action[AWS - Find Blue-Green Target Group].Output.InactiveGroupColor} "
+            Octopus.Action.Template.Id = "ActionTemplates-4147"
+            Octopus.Action.Template.Version = "1"
         }
         worker_pool = "hosted-ubuntu"
 
@@ -72,30 +40,21 @@ step "update-ami-id-1" {
             feed = "dockerhub"
             image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
         }
-
-        git_dependencies {
-            default_branch = "main"
-            git_credential_type = "Anonymous"
-            repository_uri = "https://github.com/mcasperson/PackerDemo.git"
-        }
     }
 }
 
-step "wait-for-refresh" {
-    name = "Wait for Refresh"
+step "aws-update-launch-template-ami" {
+    name = "AWS - Update Launch Template AMI"
 
     action {
-        action_type = "Octopus.AwsRunScript"
         properties = {
-            Octopus.Action.Aws.AssumeRole = "False"
-            Octopus.Action.Aws.Region = "ap-southeast-2"
-            Octopus.Action.AwsAccount.UseInstanceRole = "False"
-            Octopus.Action.AwsAccount.Variable = "AWS.Acocunt"
-            Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Script.ScriptFileName = "scripts/wait-for-refresh.sh"
-            Octopus.Action.Script.ScriptParameters = "#{Octopus.Action[Find Offline Target ASG].Output.InactiveGroup}"
-            Octopus.Action.Script.ScriptSource = "GitRepository"
-            OctopusUseBundledTooling = "False"
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.AMI = "#{AWS.AMI.ID}"
+            AWSBlueGreen.AWS.ASG = "#{Octopus.Action[AWS - Find Blue-Green ASG].Output.InactiveGroup} "
+            AWSBlueGreen.AWS.LaunchTemplateDescription = "#{Octopus.Release.Number}"
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            Octopus.Action.Template.Id = "ActionTemplates-4148"
+            Octopus.Action.Template.Version = "1"
         }
         worker_pool = "hosted-ubuntu"
 
@@ -103,30 +62,19 @@ step "wait-for-refresh" {
             feed = "dockerhub"
             image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
         }
-
-        git_dependencies {
-            default_branch = "main"
-            git_credential_type = "Anonymous"
-            repository_uri = "https://github.com/mcasperson/PackerDemo.git"
-        }
     }
 }
 
-step "switch-traffic" {
-    name = "Switch Traffic"
+step "aws-initiate-instance-refresh" {
+    name = "AWS - Initiate Instance Refresh"
 
     action {
-        action_type = "Octopus.AwsRunScript"
         properties = {
-            Octopus.Action.Aws.AssumeRole = "False"
-            Octopus.Action.Aws.Region = "ap-southeast-2"
-            Octopus.Action.AwsAccount.UseInstanceRole = "False"
-            Octopus.Action.AwsAccount.Variable = "AWS.Acocunt"
-            Octopus.Action.GitRepository.Source = "External"
-            Octopus.Action.Script.ScriptFileName = "scripts/modify-lb-listener-rule.sh"
-            Octopus.Action.Script.ScriptParameters = "#{AWS.ALB.ListenerRule} #{Octopus.Action[Find Offline Target Group].Output.ActiveGroupArn} #{Octopus.Action[Find Offline Target Group].Output.InactiveGroupArn}"
-            Octopus.Action.Script.ScriptSource = "GitRepository"
-            OctopusUseBundledTooling = "False"
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.ASG = "#{Octopus.Action[AWS - Find Blue-Green ASG].Output.InactiveGroup} "
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            Octopus.Action.Template.Id = "ActionTemplates-4149"
+            Octopus.Action.Template.Version = "1"
         }
         worker_pool = "hosted-ubuntu"
 
@@ -134,11 +82,27 @@ step "switch-traffic" {
             feed = "dockerhub"
             image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
         }
+    }
+}
 
-        git_dependencies {
-            default_branch = "main"
-            git_credential_type = "Anonymous"
-            repository_uri = "https://github.com/mcasperson/PackerDemo.git"
+step "aws-set-blue-green-target-group" {
+    name = "AWS - Set Blue-Green Target Group"
+
+    action {
+        properties = {
+            AWSBlueGreen.AWS.Account = "AWS.Acocunt"
+            AWSBlueGreen.AWS.OfflineTargetGroup = "#{Octopus.Action[AWS - Find Blue-Green Target Group].Output.ActiveGroupArn}"
+            AWSBlueGreen.AWS.OnlineTargetGroup = "#{Octopus.Action[AWS - Find Blue-Green Target Group].Output.InactiveGroupArn}"
+            AWSBlueGreen.AWS.Region = "#{AWS.Region}"
+            AWSBlueGreen.AWS.RuleArn = "#{AWS.ALB.ListenerRule}"
+            Octopus.Action.Template.Id = "ActionTemplates-4150"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "dockerhub"
+            image = "octopusdeploy/worker-tools:6.3.0-ubuntu.22.04"
         }
     }
 }
